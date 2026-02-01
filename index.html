@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Arwa Medic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- الصفحة الرئيسية -->
+<div id="homePage">
+  <div class="lang-buttons">
+    <button onclick="setLang('ar')" id="langAr">العربية</button>
+    <button onclick="setLang('fr')" id="langFr">FR</button>
+    <button onclick="setLang('en')" id="langEn">EN</button>
+  </div>
+
+  <div class="main-buttons">
+    <button class="main-btn" onclick="openReports()" id="btnReportsLabel">التقارير</button>
+    <button class="main-btn" id="btnTasksLabel">توزيع المهام</button>
+  </div>
+
+  <div class="footer-buttons">
+    <button class="dev-btn" onclick="openDev()" id="btnDevLabel">مطور التطبيق</button>
+    <button class="company-btn" onclick="openCompany()" id="btnCompanyLabel">عن الشركة</button>
+  </div>
+</div>
+
+<!-- صفحة التقارير -->
+<div id="reportsPage" style="display:none">
+  <h1 id="reportsTitle" class="center-title">التقارير</h1>
+
+  <!-- الميزان -->
+  <div class="task-card scale">
+    <h2><span id="scaleLabel">الميزان ⚖️</span></h2>
+    <label>وقت البداية</label>
+    <input type="time" id="scale_start">
+    <label>الدورية</label>
+    <select id="scale_interval">
+      <option value="15">15 دقيقة</option>
+      <option value="30">30 دقيقة</option>
+    </select>
+    <button class="start-btn" onclick="startAlarm('scale')">تشغيل المنبه</button>
+    <div class="countdown" id="scale_countdown">--:--:--</div>
+    <button class="stop-btn" onclick="stopAlarm('scale')">إيقاف</button>
+    <button class="delete-btn" onclick="deleteAlarm('scale')">حذف</button>
+  </div>
+
+  <!-- الأوطوكلاف 1 -->
+  <div class="task-card auto1">
+    <h2><span id="auto1Label">الأوطوكلاف 1 🔥</span></h2>
+    <label>وقت البداية</label>
+    <input type="time" id="auto1_start">
+    <p class="fixed">الدورية: 15 دقيقة</p>
+    <button class="start-btn" onclick="startAlarm('auto1')">تشغيل المنبه</button>
+    <div class="countdown" id="auto1_countdown">--:--:--</div>
+    <button class="stop-btn" onclick="stopAlarm('auto1')">إيقاف</button>
+    <button class="delete-btn" onclick="deleteAlarm('auto1')">حذف</button>
+  </div>
+
+  <!-- الأوطوكلاف 2 -->
+  <div class="task-card auto2">
+    <h2><span id="auto2Label">الأوطوكلاف 2 🔥</span></h2>
+    <label>وقت البداية</label>
+    <input type="time" id="auto2_start">
+    <p class="fixed">الدورية: 15 دقيقة</p>
+    <button class="start-btn" onclick="startAlarm('auto2')">تشغيل المنبه</button>
+    <div class="countdown" id="auto2_countdown">--:--:--</div>
+    <button class="stop-btn" onclick="stopAlarm('auto2')">إيقاف</button>
+    <button class="delete-btn" onclick="deleteAlarm('auto2')">حذف</button>
+  </div>
+
+  <button class="back-btn" onclick="goHome()">← رجوع</button>
+</div>
+
+<!-- النافذة المنبثقة -->
+<div id="alarmModal" class="modal">
+  <div class="modal-content">
+    <h2 id="alarmTitle">تحذير 🚨</h2>
+    <p id="alarmMessage">لا تنسى تقرير الميزان</p>
+    <button onclick="closeModal()">إغلاق</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

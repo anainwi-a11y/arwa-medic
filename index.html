@@ -2,12 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>ARWA GEST - Central Hub</title>
     <style>
         :root { --primary: #0f172a; --accent: #1e40af; --bg: #f8fafc; --card: #ffffff; --text-main: #1e293b; }
         [data-theme="dark"] { --primary: #1e293b; --accent: #3b82f6; --bg: #0f172a; --card: #1e293b; --text-main: #f1f5f9; }
         
+        /* السطر البرمجي لمنع السحب للتحديث */
         body, html { 
             margin: 0; 
             padding: 0; 
@@ -15,11 +16,10 @@
             font-family: 'Segoe UI', Tahoma, sans-serif; 
             background: var(--bg); 
             color: var(--text-main); 
-            transition: 0.3s; 
-            /* الكود المضاف لمنع التحديث عند السحب لأسفل */
+            transition: 0.3s;
             overscroll-behavior-y: contain; 
         }
-        
+
         #mainMenu { display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .header-brand { text-align: center; margin-bottom: 30px; margin-top: 10px; }
         .header-brand h1 { color: var(--primary); font-size: 2.5rem; margin: 0; letter-spacing: 3px; font-weight: 900; }
@@ -102,27 +102,190 @@
 
     <script id="code_reports" type="text/plain">
         <div id="alarmAppContent">
-            <style>#alarmAppContent { direction: rtl; font-family: 'Arial', sans-serif; background: var(--bg); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; } .header-alarm { background: var(--card); padding: 10px; display: flex; flex-direction: column; align-items: center; border-bottom: 4px solid var(--accent); } .app-title-alarm { font-weight: 900; font-size: 1.1rem; color: var(--accent); cursor: pointer; } .lang-pills { display: flex; gap: 5px; background: #cbd5e1; padding: 3px; border-radius: 10px; margin-top: 5px; } .pill { padding: 4px 12px; font-size: 0.8rem; cursor: pointer; font-weight: 900; color: #1e293b; } .pill.active { background: var(--accent); color: white; border-radius: 7px; } .base-card { background: var(--card); margin: 5px 10px; padding: 10px; border-radius: 15px; text-align: center; border: 2px solid var(--accent); } .monitoring-area { display: flex; flex-direction: column; gap: 10px; padding: 10px; } .task-card { background: var(--card); border-radius: 18px; padding: 15px; border: 2px solid #94a3b8; box-shadow: 0 4px 8px rgba(0,0,0,0.05); } .device-name { font-size: 1.4rem; font-weight: 900; background: #eef2f3; color: #1e293b; border-radius: 10px; padding: 5px; text-align: center; margin-bottom: 10px; } .timer-val-big { font-size: 3rem; font-weight: 900; text-align: center; font-family: 'Impact', sans-serif; line-height: 1; margin: 10px 0; } .next-alarm-box { background: #dfe6ed; text-align: center; padding: 6px; border-radius: 8px; font-weight: 900; font-size: 1.2rem; color: #1e40af; margin-bottom: 10px; } .controls { display: flex; justify-content: space-between; gap: 10px; } .btn-action { flex: 1; padding: 15px 0; border-radius: 15px; border: none; font-weight: 900; font-size: 1.5rem; cursor: pointer; color: white; } .btn-start { background: var(--accent); } .btn-reset { background: #dc2626; } select { padding: 10px; border-radius: 10px; font-weight: 900; font-size: 1.1rem; border: 2px solid #cbd5e1; } .modal-alarm { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 99999; } .modal-content-alarm { background: var(--card); color: var(--text-main); width: 90%; border-radius: 20px; padding: 20px; text-align: center; }</style>
-            <div class="header-alarm"><div class="app-title-alarm" onclick="window.toggleM('infoM', true)">🛡️ ARWA MEDIC (salle suremballage) ⓘ</div><div class="lang-pills"><div class="pill active" id="tab-ar" onclick="window.setL('ar')">AR</div><div class="pill" id="tab-fr" onclick="window.setL('fr')">FR</div></div></div>
-            <div class="base-card"><div id="liveClock" style="font-size:2rem; font-weight:900; color:var(--accent);">00:00</div><input type="time" id="timeInput" onchange="document.getElementById('liveClock').innerText=this.value" style="font-size:1.1rem; border-radius: 5px; border: 1px solid #ccc;"></div>
-            <div class="monitoring-area"><div class="task-card"><div id="lblNameScale" class="device-name">الميزان</div><div class="timer-val-big" id="timerScaleBig">00:00:00</div><div class="next-alarm-box"><span id="timerScaleNext">--:--</span></div><div class="controls"><select id="intScale" onchange="window.tasks.scale.interval=parseInt(this.value)"><option value="15">15M</option><option value="30">30M</option></select><button class="btn-action btn-start" id="btnScale" onclick="window.handleT('scale')">بدء</button></div></div><div class="task-card"><div id="lblNameAuto1" class="device-name">أوتوكلاف 1</div><div class="timer-val-big" id="timerAuto1Big">00:00:00</div><div class="next-alarm-box"><span id="timerAuto1Next">--:--</span></div><div class="controls"><div style="flex:1"></div><button class="btn-action btn-start" id="btnAuto1" onclick="window.handleT('auto1')">بدء</button></div></div><div class="task-card"><div id="lblNameAuto2" class="device-name">أوتوكلاف 2</div><div class="timer-val-big" id="timerAuto2Big">00:00:00</div><div class="next-alarm-box"><span id="timerAuto2Next">--:--</span></div><div class="controls"><div style="flex:1"></div><button class="btn-action btn-start" id="btnAuto2" onclick="window.handleT('auto2')">بدء</button></div></div></div>
-            <div class="modal-alarm" id="infoM"><div class="modal-content-alarm"><h3>معلومات</h3><p>المطور: يوسف هدي</p><p> شركة أروى ميديك شركة مغربية تأسست في مارس 2017 </p><button onclick="window.toggleM('infoM', false)" style="padding:10px 20px; background:#000; color:#fff; border-radius:10px; border:none; cursor:pointer;">إغلاق</button></div></div>
-            <div class="modal-alarm" id="alarmM"><div class="modal-content-alarm"><div style="font-size:4rem;">🚨</div><div id="alarmDevice" style="font-size:2rem; font-weight:900; color:#dc2626;"></div><p id="alarmMsgFull" style="font-size:1.2rem; font-weight:bold; margin:15px 0;"></p><button onclick="window.stopS()" style="padding:15px 30px; background:#dc2626; color:#fff; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">إغلاق التنبيه</button></div></div>
+            <style>
+                #alarmAppContent { direction: rtl; font-family: 'Arial', sans-serif; background: var(--bg); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; }
+                .header-alarm { background: var(--card); padding: 10px; display: flex; flex-direction: column; align-items: center; border-bottom: 4px solid var(--accent); }
+                .app-title-alarm { font-weight: 900; font-size: 1.1rem; color: var(--accent); cursor: pointer; }
+                .lang-pills { display: flex; gap: 5px; background: #cbd5e1; padding: 3px; border-radius: 10px; margin-top: 5px; }
+                .pill { padding: 4px 12px; font-size: 0.8rem; cursor: pointer; font-weight: 900; color: #1e293b; }
+                .pill.active { background: var(--accent); color: white; border-radius: 7px; }
+                .base-card { background: var(--card); margin: 5px 10px; padding: 10px; border-radius: 15px; text-align: center; border: 2px solid var(--accent); }
+                .monitoring-area { display: flex; flex-direction: column; gap: 10px; padding: 10px; }
+                .task-card { background: var(--card); border-radius: 18px; padding: 15px; border: 2px solid #94a3b8; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+                .device-name { font-size: 1.4rem; font-weight: 900; background: #eef2f3; color: #1e293b; border-radius: 10px; padding: 5px; text-align: center; margin-bottom: 10px; }
+                .timer-val-big { font-size: 3rem; font-weight: 900; text-align: center; font-family: 'Impact', sans-serif; line-height: 1; margin: 10px 0; }
+                .next-alarm-box { background: #dfe6ed; text-align: center; padding: 6px; border-radius: 8px; font-weight: 900; font-size: 1.2rem; color: #1e40af; margin-bottom: 10px; }
+                .controls { display: flex; justify-content: space-between; gap: 10px; }
+                .btn-action { flex: 1; padding: 15px 0; border-radius: 15px; border: none; font-weight: 900; font-size: 1.5rem; cursor: pointer; color: white; }
+                .btn-start { background: var(--accent); }
+                .btn-reset { background: #dc2626; }
+                select { padding: 10px; border-radius: 10px; font-weight: 900; font-size: 1.1rem; border: 2px solid #cbd5e1; }
+                .modal-alarm { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 99999; }
+                .modal-content-alarm { background: var(--card); color: var(--text-main); width: 90%; border-radius: 20px; padding: 20px; text-align: center; }
+            </style>
+            <div class="header-alarm">
+                <div class="app-title-alarm" onclick="window.toggleM('infoM', true)">🛡️ ARWA MEDIC (salle suremballage) ⓘ</div>
+                <div class="lang-pills">
+                    <div class="pill active" id="tab-ar" onclick="window.setL('ar')">AR</div>
+                    <div class="pill" id="tab-fr" onclick="window.setL('fr')">FR</div>
+                </div>
+            </div>
+            <div class="base-card">
+                <div id="liveClock" style="font-size:2rem; font-weight:900; color:var(--accent);">00:00</div>
+                <input type="time" id="timeInput" onchange="document.getElementById('liveClock').innerText=this.value" style="font-size:1.1rem; border-radius: 5px; border: 1px solid #ccc;">
+            </div>
+            <div class="monitoring-area">
+                <div class="task-card">
+                    <div id="lblNameScale" class="device-name">الميزان</div>
+                    <div class="timer-val-big" id="timerScaleBig">00:00:00</div>
+                    <div class="next-alarm-box"><span id="timerScaleNext">--:--</span></div>
+                    <div class="controls">
+                        <select id="intScale" onchange="window.tasks.scale.interval=parseInt(this.value)">
+                            <option value="15">15M</option>
+                            <option value="30">30M</option>
+                        </select>
+                        <button class="btn-action btn-start" id="btnScale" onclick="window.handleT('scale')">بدء</button>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div id="lblNameAuto1" class="device-name">أوتوكلاف 1</div>
+                    <div class="timer-val-big" id="timerAuto1Big">00:00:00</div>
+                    <div class="next-alarm-box"><span id="timerAuto1Next">--:--</span></div>
+                    <div class="controls">
+                        <div style="flex:1"></div>
+                        <button class="btn-action btn-start" id="btnAuto1" onclick="window.handleT('auto1')">بدء</button>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div id="lblNameAuto2" class="device-name">أوتوكلاف 2</div>
+                    <div class="timer-val-big" id="timerAuto2Big">00:00:00</div>
+                    <div class="next-alarm-box"><span id="timerAuto2Next">--:--</span></div>
+                    <div class="controls">
+                        <div style="flex:1"></div>
+                        <button class="btn-action btn-start" id="btnAuto2" onclick="window.handleT('auto2')">بدء</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-alarm" id="infoM">
+                <div class="modal-content-alarm">
+                    <h3>معلومات</h3>
+                    <p>المطور: يوسف هدي</p>
+                    <p> شركة أروى ميديك شركة مغربية تأسست في مارس 2017 </p>
+                    <button onclick="window.toggleM('infoM', false)" style="padding:10px 20px; background:#000; color:#fff; border-radius:10px; border:none; cursor:pointer;">إغلاق</button>
+                </div>
+            </div>
+            <div class="modal-alarm" id="alarmM">
+                <div class="modal-content-alarm">
+                    <div style="font-size:4rem;">🚨</div>
+                    <div id="alarmDevice" style="font-size:2rem; font-weight:900; color:#dc2626;"></div>
+                    <p id="alarmMsgFull" style="font-size:1.2rem; font-weight:bold; margin:15px 0;"></p>
+                    <button onclick="window.stopS()" style="padding:15px 30px; background:#dc2626; color:#fff; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">إغلاق التنبيه</button>
+                </div>
+            </div>
         </div>
         <script>
-            window.trans = { ar: { start: "بدء", reset: "حذف", preMsg: "باقي دقيقتين، يرجى طلب أربع عبوات من مصلحة البليماط.", scale: "الميزان", auto1: "أوتوكلاف 1", auto2: "أوتوكلاف 2" }, fr: { start: "Démarrer", reset: "Effacer", preMsg: "Il reste 2 min, demandez 4 poches au Plumat.", scale: "Balance", auto1: "Autoclave 1", auto2: "Autoclave 2" } };
-            window.lang = 'ar'; window.tasks = { scale: {active:false, interval:15}, auto1: {active:false, interval:15}, auto2: {active:false, interval:15} };
+            window.trans = {
+                ar: { start: "بدء", reset: "حذف", preMsg: "باقي دقيقتين، يرجى طلب أربع عبوات من مصلحة البليماط.", scale: "الميزان", auto1: "أوتوكلاف 1", auto2: "أوتوكلاف 2" },
+                fr: { start: "Démarrer", reset: "Effacer", preMsg: "Il reste 2 min, demandez 4 poches au Plumat.", scale: "Balance", auto1: "Autoclave 1", auto2: "Autoclave 2" }
+            };
+            window.lang = 'ar';
+            window.tasks = {
+                scale: {active:false, interval:15, startT:0, preS:false},
+                auto1: {active:false, interval:15, startT:0, preS:false},
+                auto2: {active:false, interval:15, startT:0, preS:false}
+            };
             window.aCtx = null; window.osc = null; window.vib = null;
+
             window.toggleM = function(id, s) { document.getElementById(id).style.display = s ? 'flex' : 'none'; };
-            window.setL = function(l) { window.lang = l; document.getElementById('alarmAppContent').style.direction = l==='ar'?'rtl':'ltr'; document.querySelectorAll('.pill').forEach(p => p.classList.remove('active')); document.getElementById('tab-'+l).classList.add('active'); for (let id in window.tasks) window.updateUI(id); };
-            window.handleT = function(id) { let t = window.tasks[id]; if (!t.active) { let [h, m] = document.getElementById('liveClock').innerText.split(':').map(Number); let d = new Date(); d.setHours(h, m, 0, 0); t.startT = d.getTime(); t.active = true; t.preS = false; } else { t.active = false; window.resetUI(id); } window.updateUI(id); };
-            window.resetUI = function(id) { document.getElementById(`timer${id.charAt(0).toUpperCase()+id.slice(1)}Big`).innerText = "00:00:00"; document.getElementById(`timer${id.charAt(0).toUpperCase()+id.slice(1)}Next`).innerText = "--:--"; };
-            window.updateUI = function(id) { let t = window.tasks[id], btn = document.getElementById('btn'+id.charAt(0).toUpperCase()+id.slice(1)); if(!btn) return; btn.innerText = t.active ? window.trans[window.lang].reset : window.trans[window.lang].start; btn.className = t.active ? "btn-action btn-reset" : "btn-action btn-start"; document.getElementById('lblNameScale').innerText = window.trans[window.lang].scale; document.getElementById('lblNameAuto1').innerText = window.trans[window.lang].auto1; document.getElementById('lblNameAuto2').innerText = window.trans[window.lang].auto2; };
-            window.sound = function() { if(!window.aCtx) window.aCtx = new (window.AudioContext || window.webkitAudioContext)(); window.osc = window.aCtx.createOscillator(); window.osc.connect(window.aCtx.destination); window.osc.start(); window.vib = setInterval(() => navigator.vibrate(500), 1000); };
-            window.stopS = function() { if(window.osc){window.osc.stop(); window.osc=null;} if(window.vib) clearInterval(window.vib); window.toggleM('alarmM', false); };
+            window.setL = function(l) {
+                window.lang = l;
+                document.getElementById('alarmAppContent').style.direction = l==='ar'?'rtl':'ltr';
+                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                document.getElementById('tab-'+l).classList.add('active');
+                for (let id in window.tasks) window.updateUI(id);
+            };
+
+            window.handleT = function(id) {
+                let t = window.tasks[id];
+                if (!t.active) {
+                    let [h, m] = document.getElementById('liveClock').innerText.split(':').map(Number);
+                    let d = new Date(); d.setHours(h, m, 0, 0);
+                    t.startT = d.getTime();
+                    t.active = true;
+                    t.preS = false;
+                } else {
+                    t.active = false;
+                    window.resetUI(id);
+                }
+                window.updateUI(id);
+            };
+
+            window.resetUI = function(id) {
+                let name = id.charAt(0).toUpperCase() + id.slice(1);
+                document.getElementById(`timer${name}Big`).innerText = "00:00:00";
+                document.getElementById(`timer${name}Next`).innerText = "--:--";
+            };
+
+            window.updateUI = function(id) {
+                let t = window.tasks[id];
+                let btn = document.getElementById('btn'+id.charAt(0).toUpperCase()+id.slice(1));
+                if(!btn) return;
+                btn.innerText = t.active ? window.trans[window.lang].reset : window.trans[window.lang].start;
+                btn.className = t.active ? "btn-action btn-reset" : "btn-action btn-start";
+                document.getElementById('lblNameScale').innerText = window.trans[window.lang].scale;
+                document.getElementById('lblNameAuto1').innerText = window.trans[window.lang].auto1;
+                document.getElementById('lblNameAuto2').innerText = window.trans[window.lang].auto2;
+            };
+
+            window.sound = function() {
+                if(!window.aCtx) window.aCtx = new (window.AudioContext || window.webkitAudioContext)();
+                window.osc = window.aCtx.createOscillator();
+                window.osc.connect(window.aCtx.destination);
+                window.osc.start();
+                window.vib = setInterval(() => navigator.vibrate(500), 1000);
+            };
+
+            window.stopS = function() {
+                if(window.osc){window.osc.stop(); window.osc=null;}
+                if(window.vib) clearInterval(window.vib);
+                window.toggleM('alarmM', false);
+            };
+
             if(window.timerInt) clearInterval(window.timerInt);
-            window.timerInt = setInterval(() => { const now = Date.now(); for (let id in window.tasks) { let t = window.tasks[id]; if (!t.active) continue; let rem = (t.interval * 60000) - ((now - t.startT) % (t.interval * 60000)); let next = t.startT + (Math.floor((now-t.startT)/(t.interval*60000))+1)*(t.interval*60000); let s = Math.floor(rem/1000)%60, m = Math.floor(rem/60000)%60, h = Math.floor(rem/3600000); let big = document.getElementById(`timer${id.charAt(0).toUpperCase()+id.slice(1)}Big`); let nxt = document.getElementById(`timer${id.charAt(0).toUpperCase()+id.slice(1)}Next`); if(big) big.innerText = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; if(nxt) nxt.innerText = new Date(next).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); if (m === 2 && s === 0 && !t.preS) { document.getElementById('alarmMsgFull').innerText = window.trans[window.lang].preMsg; document.getElementById('alarmDevice').innerText = ""; window.toggleM('alarmM', true); window.sound(); t.preS = true; } if (rem <= 1000) { document.getElementById('alarmDevice').innerText = window.trans[window.lang][id]; document.getElementById('alarmMsgFull').innerText = ""; window.toggleM('alarmM', true); window.sound(); } } }, 1000);
-            const it = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); document.getElementById('timeInput').value = it; document.getElementById('liveClock').innerText = it;
+            window.timerInt = setInterval(() => {
+                const now = Date.now();
+                for (let id in window.tasks) {
+                    let t = window.tasks[id];
+                    if (!t.active) continue;
+                    let msInt = t.interval * 60000;
+                    let elapsed = now - t.startT;
+                    let rem = msInt - (elapsed % msInt);
+                    let next = t.startT + (Math.floor(elapsed/msInt)+1)*msInt;
+                    
+                    let s = Math.floor(rem/1000)%60, m = Math.floor(rem/60000)%60, h = Math.floor(rem/3600000);
+                    let name = id.charAt(0).toUpperCase() + id.slice(1);
+                    
+                    document.getElementById(`timer${name}Big`).innerText = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                    document.getElementById(`timer${name}Next`).innerText = new Date(next).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+                    if (m === 2 && s === 0 && !t.preS) {
+                        document.getElementById('alarmMsgFull').innerText = window.trans[window.lang].preMsg;
+                        document.getElementById('alarmDevice').innerText = "";
+                        window.toggleM('alarmM', true); window.sound();
+                        t.preS = true;
+                    }
+                    if (rem <= 1000) {
+                        document.getElementById('alarmDevice').innerText = window.trans[window.lang][id];
+                        document.getElementById('alarmMsgFull').innerText = "";
+                        window.toggleM('alarmM', true); window.sound();
+                        t.preS = false;
+                    }
+                }
+            }, 1000);
+
+            const it = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+            document.getElementById('timeInput').value = it;
+            document.getElementById('liveClock').innerText = it;
         </script>
     </script>
 
@@ -149,269 +312,262 @@
                 th, td { border: 1px solid #f1f5f9; padding: 10px; text-align: center; font-size: 0.85rem; }
                 .footer-task { text-align: center; margin-top: 30px; font-size: 0.75rem; color: #94a3b8; border-top: 1px solid #eee; padding-top: 15px; }
             </style>
-
             <div class="container-task">
-                <div class="header-task">
-                    <h2 id="titleTask">Salle Suremballage</h2>
-                    <button class="lang-btn-task" onclick="window.toggleLanguageTask()" id="langSwitcherTask">Français</button>
-                </div>
+                <div class="header-task"><h2 id="titleTask">Salle Suremballage</h2><button class="lang-btn-task" onclick="window.toggleLanguageTask()" id="langSwitcherTask">Français</button></div>
                 <div id="offsetDisplayInTable" style="display:none; color:var(--danger); font-weight:bold; text-align:center; margin-bottom:10px;"></div>
-
                 <div class="setup-section">
                     <div class="input-box"><label id="lblStart">بداية التعبئة</label><input type="time" id="startTime" value="17:00"></div>
                     <div class="input-box"><label id="lblEnd">نهاية التعبئة</label><input type="time" id="endTime" value="01:00"></div>
                     <div class="input-box"><label id="lblOffset">الإزاحة (1-6)</label><button class="btn-plus" onclick="window.incrementOffsetTask()" id="offsetBtnTask">+1 (1)</button></div>
                 </div>
-
                 <div class="lunch-section">
                     <div class="input-box"><label id="lblLunchStart">وقت الاستراحة (بداية)</label><input type="time" id="lunchStart" value="22:00"></div>
-                    <div class="input-box"><label id="lblLunchDur">مدة الاستراحة</label>
-                        <select id="lunchDuration"><option value="60">60 دقيقة</option><option value="30">30 دقيقة</option><option value="0">0 دقيقة</option></select>
-                    </div>
+                    <div class="input-box"><label id="lblLunchDur">مدة الاستراحة</label><select id="lunchDuration"><option value="60">60 دقيقة</option><option value="30">30 دقيقة</option><option value="0">0 دقيقة</option></select></div>
                 </div>
-
                 <div class="setup-section">
                     <div class="input-box"><label id="lblTotalW">Effectif total</label><select id="totalW"></select></div>
                     <div class="input-box"><label id="lblMales">الأوبراتور</label><select id="males"></select></div>
                     <div class="input-box"><label id="lblQual">المؤهلين للميراج</label><select id="qual"></select></div>
                     <div class="input-box"><label id="lblTables">طاولات الميراج</label><select id="tables"></select></div>
                 </div>
-
                 <button class="main-btn" onclick="window.calculateTask()" id="btnGenerateTask">توليد الجدول المحدث</button>
-                <div class="action-btns" id="actionGroupTask">
-                    <button class="whatsapp-btn" onclick="window.shareWhatsAppTask()" id="btnWATask">واتساب 📱</button>
-                    <button class="pdf-btn" onclick="window.print()" id="btnPDFTask">حفظ PDF 📄</button>
-                </div>
-
-                <div id="resultsTask"></div>
-                <div class="footer-task">Created by YOUSSEF HADI</div>
+                <div class="action-btns" id="actionGroupTask"><button class="whatsapp-btn" onclick="window.shareWhatsAppTask()" id="btnWATask">واتساب 📱</button><button class="pdf-btn" onclick="window.print()" id="btnPDFTask">حفظ PDF 📄</button></div>
+                <div id="resultsTask"></div><div class="footer-task">Created by YOUSSEF HADI</div>
             </div>
-
             <script>
-                window.currentLangTask = 'ar';
-                window.currentOffsetTask = 1;
-                window.lastCalcTask = null;
-
-                const dictTask = {
-                    ar: { title: "Salle Suremballage", offset: "الإزاحة: ", start: "بداية التعبئة", end: "نهاية التعبئة", workers: "Effectif total", males: "الأوبراتور", qual: "المؤهلين للميراج", tables: "طاولات الميراج", lunchS: "وقت الاستراحة (بداية)", lunchD: "مدة الاستراحة", lunchBreak: "--- استراحة ---", generate: "توليد الجدول", wa: "واتساب 📱", pdf: "حفظ PDF 📄", pair: "الثنائي", operator: "الأوبراتور", qualified: "المؤهل رقم", dur: "د/دورة", min: "دقيقة" },
-                    fr: { title: "Salle Suremballage", offset: "Offset: ", start: "Début de remplissage", end: "Arrêt de remplissage", workers: "Effectif total", males: "Opérateurs", qual: "Qualifiés pour Mirage", tables: "Tables de Mirage", lunchS: "Début de pause", lunchD: "Durée de pause", lunchBreak: "--- الاستراحة ---", generate: "Générer", wa: "WhatsApp 📱", pdf: "Sauver PDF 📄", pair: "Binôme", operator: "Opérateur", qualified: "Qualifié N°", dur: "min/tour", min: "min" }
-                };
-
+                window.currentLangTask = 'ar'; window.currentOffsetTask = 1; window.lastCalcTask = null;
+                const dictTask = { ar: { title: "Salle Suremballage", offset: "الإزاحة: ", start: "بداية التعبئة", end: "نهاية التعبئة", workers: "Effectif total", males: "الأوبراتور", qual: "المؤهلين للميراج", tables: "طاولات الميراج", lunchS: "وقت الاستراحة (بداية)", lunchD: "مدة الاستراحة", lunchBreak: "--- استراحة ---", generate: "توليد الجدول", wa: "واتساب 📱", pdf: "حفظ PDF 📄", pair: "الثنائي", operator: "الأوبراتور", qualified: "المؤهل رقم", dur: "د/دورة", min: "دقيقة" }, fr: { title: "Salle Suremballage", offset: "Offset: ", start: "Début de remplissage", end: "Arrêt de remplissage", workers: "Effectif total", males: "Opérateurs", qual: "Qualifiés pour Mirage", tables: "Tables de Mirage", lunchS: "Début de pause", lunchD: "Durée de pause", lunchBreak: "--- الاستراحة ---", generate: "Générer", wa: "WhatsApp 📱", pdf: "Sauver PDF 📄", pair: "Binôme", operator: "Opérateur", qualified: "Qualifié N°", dur: "min/tour", min: "min" } };
                 window.fillSelectsTask = function() {
                     const fill = (id, s, e, sel) => {
-                        const el = document.getElementById(id); if(!el) return;
-                        el.innerHTML = "";
-                        for(let i=s; i<=e; i++) {
-                            let opt = document.createElement('option');
-                            opt.value = i; opt.innerText = i;
-                            if(i === sel) opt.selected = true;
-                            el.appendChild(opt);
-                        }
+                        const el = document.getElementById(id); if(!el) return; el.innerHTML = "";
+                        for(let i=s; i<=e; i++) { let opt = document.createElement('option'); opt.value = i; opt.innerText = i; if(i === sel) opt.selected = true; el.appendChild(opt); }
                     };
                     fill('totalW', 8, 15, 10); fill('males', 1, 15, 7); fill('qual', 1, 15, 6); fill('tables', 1, 5, 3);
-                }
+                };
                 window.fillSelectsTask();
-
-                window.incrementOffsetTask = function() {
-                    window.currentOffsetTask = window.currentOffsetTask >= 6 ? 1 : window.currentOffsetTask + 1;
-                    document.getElementById('offsetBtnTask').innerText = "+1 (" + window.currentOffsetTask + ")";
-                }
-
+                window.incrementOffsetTask = function() { window.currentOffsetTask = window.currentOffsetTask >= 6 ? 1 : window.currentOffsetTask + 1; document.getElementById('offsetBtnTask').innerText = "+1 (" + window.currentOffsetTask + ")"; };
                 window.toggleLanguageTask = function() {
                     window.currentLangTask = window.currentLangTask === 'ar' ? 'fr' : 'ar';
                     document.getElementById('tasksAppContainer').dir = window.currentLangTask === 'ar' ? 'rtl' : 'ltr';
                     document.getElementById('langSwitcherTask').innerText = window.currentLangTask === 'ar' ? 'Français' : 'العربية';
                     const d = dictTask[window.currentLangTask];
-                    document.getElementById('titleTask').innerText = d.title;
-                    document.getElementById('lblStart').innerText = d.start;
-                    document.getElementById('lblEnd').innerText = d.end;
-                    document.getElementById('lblLunchStart').innerText = d.lunchS;
-                    document.getElementById('lblLunchDur').innerText = d.lunchD;
-                    document.getElementById('lblTotalW').innerText = d.workers;
-                    document.getElementById('lblMales').innerText = d.males;
-                    document.getElementById('lblQual').innerText = d.qual;
-                    document.getElementById('lblTables').innerText = d.tables;
-                    document.getElementById('btnGenerateTask').innerText = d.generate;
-                    document.getElementById('btnWATask').innerText = d.wa;
-                    document.getElementById('btnPDFTask').innerText = d.pdf;
+                    document.getElementById('titleTask').innerText = d.title; document.getElementById('lblStart').innerText = d.start; document.getElementById('lblEnd').innerText = d.end;
+                    document.getElementById('lblLunchStart').innerText = d.lunchS; document.getElementById('lblLunchDur').innerText = d.lunchD;
+                    document.getElementById('lblTotalW').innerText = d.workers; document.getElementById('lblMales').innerText = d.males;
+                    document.getElementById('lblQual').innerText = d.qual; document.getElementById('lblTables').innerText = d.tables;
+                    document.getElementById('btnGenerateTask').innerText = d.generate; document.getElementById('btnWATask').innerText = d.wa; document.getElementById('btnPDFTask').innerText = d.pdf;
                     if(window.lastCalcTask) window.calculateTask();
-                }
-
-                // تطبيق المعادلة الصارمة
+                };
                 window.calculateTask = function() {
                     const toM = (s) => { const [h,m]=s.split(':').map(Number); return h*60+m; };
                     let startM = toM(document.getElementById('startTime').value);
                     let endM = toM(document.getElementById('endTime').value);
                     if (endM <= startM) endM += 1440;
-                    
                     const lStart = toM(document.getElementById('lunchStart').value);
                     const lDur = parseInt(document.getElementById('lunchDuration').value);
                     const lEnd = lStart + lDur;
-
                     const n = parseInt(document.getElementById('totalW').value);
                     const males = parseInt(document.getElementById('males').value);
                     const qual = parseInt(document.getElementById('qual').value);
                     const tCount = parseInt(document.getElementById('tables').value);
-
-                    // صافي الدقائق = الكلي - الاستراحة
                     const netM = (endM - startM) - lDur;
-                    
-                    window.lastCalcTask = { 
-                        mDur: netM / Math.floor(n/2), 
-                        aDur: netM / males, 
-                        miragePer: (netM * tCount) / qual,
-                        startM, lStart, lDur, lEnd, n, males, qual, endM
-                    };
-
+                    window.lastCalcTask = { mDur: netM / Math.floor(n/2), aDur: netM / males, miragePer: (netM * tCount) / qual, startM, lStart, lDur, lEnd, n, males, qual, endM };
                     document.getElementById('actionGroupTask').style.display = 'grid';
                     document.getElementById('offsetDisplayInTable').style.display = 'block';
                     document.getElementById('offsetDisplayInTable').innerText = dictTask[window.currentLangTask].offset + window.currentOffsetTask;
-                    
                     let html = `<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">`;
                     html += window.genCardTask(`Multivac (${Math.floor(window.lastCalcTask.mDur)} ${dictTask[window.currentLangTask].min})`, Math.floor(n/2), window.lastCalcTask.mDur, dictTask[window.currentLangTask].pair, startM, endM, lStart, lDur, lEnd, window.currentOffsetTask);
                     html += window.genCardTask(`Alimentation (${Math.floor(window.lastCalcTask.aDur)} ${dictTask[window.currentLangTask].min})`, males, window.lastCalcTask.aDur, dictTask[window.currentLangTask].operator, startM, endM, lStart, lDur, lEnd, window.currentOffsetTask);
-                    
                     let mirHtml = `<div class="task-card"><h3>Mirage</h3><table>`;
-                    for(let i=1; i<=qual; i++) { 
+                    for(let i=1; i<=qual; i++) {
                         let shiftedMir = ((i + window.currentOffsetTask - 2) % qual) + 1;
-                        mirHtml += `<tr><td>${dictTask[window.currentLangTask].qualified} ${shiftedMir}</td><td><b>${Math.floor(window.lastCalcTask.miragePer)} ${dictTask[window.currentLangTask].min}</b></td></tr>`; 
+                        mirHtml += `<tr><td>${dictTask[window.currentLangTask].qualified} ${shiftedMir}</td><td><b>${Math.floor(window.lastCalcTask.miragePer)} ${dictTask[window.currentLangTask].min}</b></td></tr>`;
                     }
                     html += mirHtml + `</table></div></div>`;
                     document.getElementById('resultsTask').innerHTML = html;
-                }
-
-                // دالة توليد الجدول التي تطبق منطق P1/P2
+                };
                 window.genCardTask = function(title, count, duration, label, start, endLimit, lStart, lDur, lEnd, offset) {
-                    let rows = ""; 
-                    let currentPos = start; 
-                    const fmt = (m) => `${(Math.floor(m/60)%24).toString().padStart(2,'0')}:${(Math.floor(m%60)).toString().padStart(2,'0')}`;
-
+                    let rows = ""; let currentPos = start; const fmt = (m) => `${(Math.floor(m/60)%24).toString().padStart(2,'0')}:${(Math.floor(m%60)).toString().padStart(2,'0')}`;
                     for(let i=0; i < count; i++) {
                         let workerId = ((i + (offset || 1) - 1) % count) + 1;
                         let timeLeft = duration;
-                        let sW = workerId;
-
-                        // الحالة 1: قبل الاستراحة
                         if (currentPos < lStart) {
                             let spaceBefore = lStart - currentPos;
                             if (spaceBefore >= timeLeft) {
-                                let wEnd = currentPos + timeLeft;
-                                if (i === count - 1) wEnd = endLimit;
-                                rows += `<tr><td>${fmt(currentPos)} - ${fmt(wEnd)}</td><td><b>${label} ${sW}</b></td></tr>`;
+                                let wEnd = currentPos + timeLeft; if (i === count - 1) wEnd = endLimit;
+                                rows += `<tr><td>${fmt(currentPos)} - ${fmt(wEnd)}</td><td><b>${label} ${workerId}</b></td></tr>`;
                                 currentPos = wEnd;
                             } else {
-                                // تطبيق المقص: P1 ثم استراحة ثم P2
-                                rows += `<tr><td>${fmt(currentPos)} - ${fmt(lStart)}</td><td><b>${label} ${sW} (P1)</b></td></tr>`;
+                                rows += `<tr><td>${fmt(currentPos)} - ${fmt(lStart)}</td><td><b>${label} ${workerId} (P1)</b></td></tr>`;
                                 rows += `<tr class="lunch-row"><td colspan="2">${dictTask[window.currentLangTask].lunchBreak}</td></tr>`;
-                                let rem = timeLeft - spaceBefore;
-                                let p2End = lEnd + rem;
-                                if (i === count - 1) p2End = endLimit;
-                                rows += `<tr><td>${fmt(lEnd)} - ${fmt(p2End)}</td><td><b>${label} ${sW} (P2)</b></td></tr>`;
+                                let rem = timeLeft - spaceBefore; let p2End = lEnd + rem; if (i === count - 1) p2End = endLimit;
+                                rows += `<tr><td>${fmt(lEnd)} - ${fmt(p2End)}</td><td><b>${label} ${workerId} (P2)</b></td></tr>`;
                                 currentPos = p2End;
                             }
-                        } 
-                        // الحالة 2: بعد الاستراحة
-                        else {
+                        } else {
                             if (currentPos < lEnd) currentPos = lEnd;
-                            let wEnd = currentPos + timeLeft;
-                            if (i === count - 1) wEnd = endLimit;
-                            rows += `<tr><td>${fmt(currentPos)} - ${fmt(wEnd)}</td><td><b>${label} ${sW}</b></td></tr>`;
+                            let wEnd = currentPos + timeLeft; if (i === count - 1) wEnd = endLimit;
+                            rows += `<tr><td>${fmt(currentPos)} - ${fmt(wEnd)}</td><td><b>${label} ${workerId}</b></td></tr>`;
                             currentPos = wEnd;
                         }
                     }
                     return `<div class="task-card"><h3>${title}</h3><table>${rows}</table></div>`;
-                }
-
+                };
                 window.shareWhatsAppTask = function() {
-                    const d = dictTask[window.currentLangTask]; const fmt = (m) => `${(Math.floor(m/60)%24).toString().padStart(2,'0')}:${(Math.floor(m%60)).toString().padStart(2,'0')}`;
+                    const d = dictTask[window.currentLangTask];
                     let msg = `*🚀 ${d.title} (ARWA MEDIC) 🚀*%0A*Offset:* ${window.currentOffsetTask}%0A%0A`;
                     msg += document.getElementById('resultsTask').innerText.replace(/\n/g, '%0A');
                     window.open("https://wa.me/?text=" + msg);
-                }
+                };
             </script>
         </div>
     </script>
 
     <script id="code_cleaning" type="text/plain">
         <div id="lotteryAppContainer">
-            <style>#lotteryAppContainer { --primary: #0284c7; --success: #22c55e; --bg: var(--bg); --danger: #ef4444; --accent: #1e40af; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text-main); padding: 10px; } .container-lot { max-width: 800px; margin: auto; background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); } .header-lot { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px; gap: 10px; } .lang-btn-lot { background: #475569; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; white-space: nowrap; } .setup-box { background: #f1f5f9; padding: 15px; border-radius: 15px; margin-bottom: 20px; color: #1e293b; } .input-row { display: flex; gap: 10px; margin-bottom: 10px; } input, select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; color: #1e293b; } input[type="text"] { flex: 1; } .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; } .btn-add { background: var(--primary); } .btn-draw { background: var(--accent); width: 100%; font-size: 1.1rem; margin-top: 10px; } .worker-tag { display: inline-flex; align-items: center; background: white; padding: 5px 12px; border-radius: 20px; margin: 5px; border: 1px solid #e2e8f0; font-size: 0.85rem; color: #1e293b; } .worker-tag button { background: none; border: none; color: var(--danger); margin-right: 8px; cursor: pointer; } #loaderLot { display: none; text-align: center; margin: 30px 0; } .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--accent); border-radius: 50%; animation: spinLot 1s linear infinite; margin: auto; } @keyframes spinLot { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } table { width: 100%; border-collapse: collapse; margin-top: 10px; color: var(--text-main); } th, td { border: 1px solid #f1f5f9; padding: 12px; text-align: center; } .hall-title { color: var(--accent); font-weight: bold; margin-top: 10px; display: block; text-align: center; text-decoration: underline; font-size: 1.2rem; } .names-list { font-size: 1.2rem; font-weight: bold; color: var(--text-main); display: block; margin: 10px 0; text-align: center; } .lot-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }</style>
-            <div class="container-lot"><div class="header-lot"><div><h2 id="mainTitleLot" style="margin:0;">Salle Suremballage</h2><p id="subTitleLot" style="color: #64748b; font-size: 0.85rem; margin: 5px 0 0 0;">نظام تنظيم تنظيف القاعات</p></div><button class="lang-btn-lot" onclick="window.toggleLanguageLottery()" id="langSwitcherLot">Français</button></div><div class="setup-box"><label id="lblAddLot" style="font-weight: bold; font-size: 0.85rem;">1. أسماء العمال المتوفرين:</label><div class="input-row"><input type="text" id="workerNameLot" placeholder="أدخل اسم العامل..."><button class="btn btn-add" id="btnAddLot" onclick="window.addWorkerLottery()">إضافة +</button></div><div id="workersListLot"></div></div><div class="setup-box"><div class="input-row"><div style="flex:1"><label id="lblModeLot" style="font-weight: bold; font-size: 0.85rem;">2. نظام التوزيع:</label><select id="hallModeLot" onchange="window.toggleOptionsLottery()" style="width:100%"><option value="1">قاعة واحدة (أسبوعي)</option><option value="2">قاعتان (تقسيم الكل)</option></select></div><div style="flex:1" id="dailyOptionLot"><label id="lblPerDayLot" style="font-weight: bold; font-size: 0.85rem;">3. عمال لكل يوم:</label><select id="perDayLot" style="width:100%"><option value="2">2</option><option value="3">3</option></select></div></div><button class="btn btn-draw" id="btnDrawLot" onclick="window.runLotteryLottery()">إجراء القرعة 🎲</button></div><div id="loaderLot"><div class="spinner"></div><div id="loadingTxtLot" style="color:var(--accent); font-weight:bold; margin-top:15px;">جاري خلط الأسماء...</div></div><div id="resultAreaLot" style="display:none; margin-top:20px; border:2px solid #e2e8f0; border-radius:15px; padding:15px;"><div id="currentDateDisplayLot" style="font-weight:bold; text-align:center; margin-bottom:15px; color:#475569;"></div><div id="outputContentLot"></div><div class="lot-actions"><button class="btn" style="background:#25d366" onclick="window.shareLotteryWA()" id="btnLotWA">واتساب 📱</button><button class="btn" style="background:#e11d48" onclick="window.print()" id="btnLotPDF">حفظ PDF 📄</button></div></div></div>
+            <style>
+                #lotteryAppContainer { --primary: #0284c7; --success: #22c55e; --bg: var(--bg); --danger: #ef4444; --accent: #1e40af; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text-main); padding: 10px; }
+                .container-lot { max-width: 800px; margin: auto; background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+                .header-lot { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px; gap: 10px; }
+                .lang-btn-lot { background: #475569; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; white-space: nowrap; }
+                .setup-box { background: #f1f5f9; padding: 15px; border-radius: 15px; margin-bottom: 20px; color: #1e293b; }
+                .input-row { display: flex; gap: 10px; margin-bottom: 10px; }
+                input, select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; color: #1e293b; }
+                input[type="text"] { flex: 1; }
+                .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
+                .btn-add { background: var(--primary); }
+                .btn-draw { background: var(--accent); width: 100%; font-size: 1.1rem; margin-top: 10px; }
+                .worker-tag { display: inline-flex; align-items: center; background: white; padding: 5px 12px; border-radius: 20px; margin: 5px; border: 1px solid #e2e8f0; font-size: 0.85rem; color: #1e293b; }
+                .worker-tag button { background: none; border: none; color: var(--danger); margin-right: 8px; cursor: pointer; }
+                #loaderLot { display: none; text-align: center; margin: 30px 0; }
+                .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--accent); border-radius: 50%; animation: spinLot 1s linear infinite; margin: auto; }
+                @keyframes spinLot { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                table { width: 100%; border-collapse: collapse; margin-top: 10px; color: var(--text-main); }
+                th, td { border: 1px solid #f1f5f9; padding: 12px; text-align: center; }
+                .hall-title { color: var(--accent); font-weight: bold; margin-top: 10px; display: block; text-align: center; text-decoration: underline; font-size: 1.2rem; }
+                .names-list { font-size: 1.2rem; font-weight: bold; color: var(--text-main); display: block; margin: 10px 0; text-align: center; }
+                .lot-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+            </style>
+            <div class="container-lot">
+                <div class="header-lot">
+                    <div><h2 id="mainTitleLot" style="margin:0;">Salle Suremballage</h2><p id="subTitleLot" style="color: #64748b; font-size: 0.85rem; margin: 5px 0 0 0;">نظام تنظيم تنظيف القاعات</p></div>
+                    <button class="lang-btn-lot" onclick="window.toggleLanguageLottery()" id="langSwitcherLot">Français</button>
+                </div>
+                <div class="setup-box">
+                    <label id="lblAddLot" style="font-weight: bold; font-size: 0.85rem;">1. أسماء العمال المتوفرين:</label>
+                    <div class="input-row"><input type="text" id="workerNameLot" placeholder="أدخل اسم العامل..."><button class="btn btn-add" id="btnAddLot" onclick="window.addWorkerLottery()">إضافة +</button></div>
+                    <div id="workersListLot"></div>
+                </div>
+                <div class="setup-box">
+                    <div class="input-row">
+                        <div style="flex:1"><label id="lblModeLot" style="font-weight: bold; font-size: 0.85rem;">2. نظام التوزيع:</label><select id="hallModeLot" onchange="window.toggleOptionsLottery()" style="width:100%"><option value="1">قاعة واحدة (أسبوعي)</option><option value="2">قاعتان (تقسيم الكل)</option></select></div>
+                        <div style="flex:1" id="dailyOptionLot"><label id="lblPerDayLot" style="font-weight: bold; font-size: 0.85rem;">3. عمال لكل يوم:</label><select id="perDayLot" style="width:100%"><option value="2">2</option><option value="3">3</option></select></div>
+                    </div>
+                    <button class="btn btn-draw" id="btnDrawLot" onclick="window.runLotteryLottery()">إجراء القرعة 🎲</button>
+                </div>
+                <div id="loaderLot"><div class="spinner"></div><div id="loadingTxtLot" style="color:var(--accent); font-weight:bold; margin-top:15px;">جاري خلط الأسماء...</div></div>
+                <div id="resultAreaLot" style="display:none; margin-top:20px; border:2px solid #e2e8f0; border-radius:15px; padding:15px;">
+                    <div id="currentDateDisplayLot" style="font-weight:bold; text-align:center; margin-bottom:15px; color:#475569;"></div>
+                    <div id="outputContentLot"></div>
+                    <div class="lot-actions"><button class="btn" style="background:#25d366" onclick="window.shareLotteryWA()" id="btnLotWA">واتساب 📱</button><button class="btn" style="background:#e11d48" onclick="window.print()" id="btnLotPDF">حفظ PDF 📄</button></div>
+                </div>
+            </div>
             <script>
                 window.currentLangLot = 'ar'; window.workersLot = [];
                 const dictLot = { ar: { sub: "نظام تنظيم تنظيف القاعات", add: "1. أسماء العمال المتوفرين:", place: "أدخل اسم العامل...", addBtn: "إضافة +", mode: "2. نظام التوزيع:", mode1: "قاعة واحدة (أسبوعي)", mode2: "قاعتان (تقسيم الكل)", perDay: "3. عمال لكل يوم:", draw: "إجراء القرعة 🎲", loading: "جاري خلط الأسماء...", datePre: "تاريخ اليوم: ", hall1: "Salle Suremballage", hall2: "Amarow", days: ["الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"], wa: "واتساب 📱", pdf: "حفظ PDF 📄", luck: "بالتوفيق للجميع!" }, fr: { sub: "Système de Nettoyage", add: "1. Liste des ouvriers:", place: "Nom de l'ouvrier...", addBtn: "Ajouter +", mode: "2. Système de distribution:", mode1: "Une salle (Hebdo)", mode2: "Deux salles (Division)", perDay: "3. Ouvriers par jour:", draw: "Lancer le tirage 🎲", loading: "Mélange des noms...", datePre: "Date: ", hall1: "Salle Suremballage", hall2: "Amarow", days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"], wa: "WhatsApp 📱", pdf: "Sauver PDF 📄", luck: "Bonne chance!" } };
-                window.toggleLanguageLottery = function() { window.currentLangLot = window.currentLangLot === 'ar' ? 'fr' : 'ar'; const d = dictLot[window.currentLangLot]; document.getElementById('lotteryAppContainer').dir = window.currentLangLot === 'ar' ? 'rtl' : 'ltr'; document.getElementById('langSwitcherLot').innerText = window.currentLangLot === 'ar' ? 'Français' : 'العربية'; document.getElementById('subTitleLot').innerText = d.sub; document.getElementById('lblAddLot').innerText = d.add; document.getElementById('workerNameLot').placeholder = d.place; document.getElementById('btnAddLot').innerText = d.addBtn; document.getElementById('lblModeLot').innerText = d.mode; document.getElementById('btnDrawLot').innerText = d.draw; document.getElementById('btnLotWA').innerText = d.wa; document.getElementById('btnLotPDF').innerText = d.pdf; if(window.workersLot.length > 0 && document.getElementById('resultAreaLot').style.display === 'block') window.generateDrawLottery(); };
-                window.addWorkerLottery = function() { const input = document.getElementById('workerNameLot'); const name = input.value.trim(); if(name && !window.workersLot.includes(name)) { window.workersLot.push(name); window.renderWorkersLottery(); input.value = ''; } };
+                window.toggleLanguageLottery = function() {
+                    window.currentLangLot = window.currentLangLot === 'ar' ? 'fr' : 'ar';
+                    const d = dictLot[window.currentLangLot];
+                    document.getElementById('lotteryAppContainer').dir = window.currentLangLot === 'ar' ? 'rtl' : 'ltr';
+                    document.getElementById('langSwitcherLot').innerText = window.currentLangLot === 'ar' ? 'Français' : 'العربية';
+                    document.getElementById('subTitleLot').innerText = d.sub; document.getElementById('lblAddLot').innerText = d.add;
+                    document.getElementById('workerNameLot').placeholder = d.place; document.getElementById('btnAddLot').innerText = d.addBtn;
+                    document.getElementById('lblModeLot').innerText = d.mode; document.getElementById('btnDrawLot').innerText = d.draw;
+                    document.getElementById('btnLotWA').innerText = d.wa; document.getElementById('btnLotPDF').innerText = d.pdf;
+                    if(window.workersLot.length > 0 && document.getElementById('resultAreaLot').style.display === 'block') window.generateDrawLottery();
+                };
+                window.addWorkerLottery = function() {
+                    const input = document.getElementById('workerNameLot'); const name = input.value.trim();
+                    if(name && !window.workersLot.includes(name)) { window.workersLot.push(name); window.renderWorkersLottery(); input.value = ''; }
+                };
                 window.renderWorkersLottery = function() { document.getElementById('workersListLot').innerHTML = window.workersLot.map((w, i) => `<span class="worker-tag">${w} <button onclick="window.removeWorkerLottery(${i})">×</button></span>`).join(''); };
                 window.removeWorkerLottery = function(index) { window.workersLot.splice(index, 1); window.renderWorkersLottery(); };
                 window.toggleOptionsLottery = function() { const mode = document.getElementById('hallModeLot').value; document.getElementById('dailyOptionLot').style.visibility = (mode === "1") ? "visible" : "hidden"; };
-                window.runLotteryLottery = function() { if(window.workersLot.length < 2) return alert(window.currentLangLot === 'ar' ? "أضف عمالاً أولاً!" : "Ajoutez des ouvriers!"); document.getElementById('resultAreaLot').style.display = 'none'; document.getElementById('btnDrawLot').disabled = true; document.getElementById('loaderLot').style.display = 'block'; setTimeout(() => { window.generateDrawLottery(); document.getElementById('loaderLot').style.display = 'none'; document.getElementById('resultAreaLot').style.display = 'block'; document.getElementById('btnDrawLot').disabled = false; }, 3000); };
-                window.generateDrawLottery = function() { 
-                    const mode = document.getElementById('hallModeLot').value; 
-                    const d = dictLot[window.currentLangLot]; 
-                    const dateStr = new Date().toLocaleDateString(window.currentLangLot === 'ar' ? 'ar-MA' : 'fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); 
-                    document.getElementById('currentDateDisplayLot').innerText = d.datePre + dateStr; 
-                    let shuf = [...window.workersLot].sort(() => Math.random() - 0.5); 
-                    let html = ''; 
-                    if(mode === "1") { 
-                        const perDay = parseInt(document.getElementById('perDayLot').value); 
-                        while(shuf.length < (d.days.length * perDay)) shuf = shuf.concat([...window.workersLot].sort(() => Math.random() - 0.5)); 
-                        html = `<table><thead><tr><th>${window.currentLangLot==='ar'?'اليوم':'Jour'}</th><th>${window.currentLangLot==='ar'?'المنظفين':'Nettoyage'}</th></tr></thead><tbody>`; 
-                        let idx = 0; d.days.forEach(day => { let group = shuf.slice(idx, idx + perDay); idx += perDay; html += `<tr><td><b>${day}</b></td><td>${group.join(' - ')}</td></tr>`; }); 
-                        html += `</tbody></table>`; 
-                    } else { 
-                        const half = Math.ceil(shuf.length / 2); 
-                        window.lotResH1 = shuf.slice(0, half); window.lotResH2 = shuf.slice(half);
-                        html = `<span class="hall-title">📍 ${d.hall1}</span><span class="names-list">${window.lotResH1.join(' - ')}</span><hr style="border:1px solid #f1f5f9; margin:15px 0;"><span class="hall-title">📍 ${d.hall2}</span><span class="names-list">${window.lotResH2.join(' - ')}</span>`; 
-                    } 
-                    document.getElementById('outputContentLot').innerHTML = html; 
+                window.runLotteryLottery = function() {
+                    if(window.workersLot.length < 2) return alert(window.currentLangLot === 'ar' ? "أضف عمالاً أولاً!" : "Ajoutez des ouvriers!");
+                    document.getElementById('resultAreaLot').style.display = 'none'; document.getElementById('btnDrawLot').disabled = true;
+                    document.getElementById('loaderLot').style.display = 'block';
+                    setTimeout(() => { window.generateDrawLottery(); document.getElementById('loaderLot').style.display = 'none'; document.getElementById('resultAreaLot').style.display = 'block'; document.getElementById('btnDrawLot').disabled = false; }, 3000);
                 };
-                window.shareLotteryWA = function() { 
-                    const d = dictLot[window.currentLangLot];
-                    const dateStr = document.getElementById('currentDateDisplayLot').innerText; 
+                window.generateDrawLottery = function() {
+                    const mode = document.getElementById('hallModeLot').value; const d = dictLot[window.currentLangLot];
+                    const dateStr = new Date().toLocaleDateString(window.currentLangLot === 'ar' ? 'ar-MA' : 'fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    document.getElementById('currentDateDisplayLot').innerText = d.datePre + dateStr;
+                    let shuf = [...window.workersLot].sort(() => Math.random() - 0.5);
+                    let html = '';
+                    if(mode === "1") {
+                        const perDay = parseInt(document.getElementById('perDayLot').value);
+                        while(shuf.length < (d.days.length * perDay)) shuf = shuf.concat([...window.workersLot].sort(() => Math.random() - 0.5));
+                        html = `<table><thead><tr><th>${window.currentLangLot==='ar'?'اليوم':'Jour'}</th><th>${window.currentLangLot==='ar'?'المنظفين':'Nettoyage'}</th></tr></thead><tbody>`;
+                        let idx = 0; d.days.forEach(day => { let group = shuf.slice(idx, idx + perDay); idx += perDay; html += `<tr><td><b>${day}</b></td><td>${group.join(' - ')}</td></tr>`; });
+                        html += `</tbody></table>`;
+                    } else {
+                        const half = Math.ceil(shuf.length / 2); window.lotResH1 = shuf.slice(0, half); window.lotResH2 = shuf.slice(half);
+                        html = `<span class="hall-title">📍 ${d.hall1}</span><span class="names-list">${window.lotResH1.join(' - ')}</span><hr style="border:1px solid #f1f5f9; margin:15px 0;"><span class="hall-title">📍 ${d.hall2}</span><span class="names-list">${window.lotResH2.join(' - ')}</span>`;
+                    }
+                    document.getElementById('outputContentLot').innerHTML = html;
+                };
+                window.shareLotteryWA = function() {
+                    const d = dictLot[window.currentLangLot]; const dateStr = document.getElementById('currentDateDisplayLot').innerText;
                     let msg = `*🧹 ${d.sub} (ARWA MEDIC) 🧹*%0A%0A✨ *${dateStr}* ✨%0A%0A`;
                     const mode = document.getElementById('hallModeLot').value;
-                    if(mode === "2") {
-                        msg += `*🏢 ${d.hall1}:*%0A👤 ${window.lotResH1.join(' %0A👤 ')}%0A%0A`;
-                        msg += `*📦 ${d.hall2}:*%0A👤 ${window.lotResH2.join(' %0A👤 ')}%0A%0A`;
-                    } else {
-                        msg += document.getElementById('outputContentLot').innerText.replace(/\n/g, '%0A');
-                    }
-                    msg += `%0A🍀 *${d.luck}*`; 
-                    window.open("https://wa.me/?text=" + msg); 
-                }
+                    if(mode === "2") { msg += `*🏢 ${d.hall1}:*%0A👤 ${window.lotResH1.join(' %0A👤 ')}%0A%0A`; msg += `*📦 ${d.hall2}:*%0A👤 ${window.lotResH2.join(' %0A👤 ')}%0A%0A`; }
+                    else { msg += document.getElementById('outputContentLot').innerText.replace(/\n/g, '%0A'); }
+                    msg += `%0A🍀 *${d.luck}*`; window.open("https://wa.me/?text=" + msg);
+                };
             </script>
         </div>
     </script>
 
     <script>
+        // منع السحب للتحديث برمجياً
+        let ts = 0;
+        document.addEventListener('touchstart', e => { ts = e.touches[0].pageY; }, {passive: true});
+        document.addEventListener('touchmove', e => { 
+            if (e.touches[0].pageY > ts && window.scrollY === 0) e.preventDefault(); 
+        }, {passive: false});
+
         function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
-                body.removeAttribute('data-theme');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-            }
+            const hasTheme = document.body.hasAttribute('data-theme');
+            hasTheme ? document.body.removeAttribute('data-theme') : document.body.setAttribute('data-theme', 'dark');
         }
 
-        function toggleModal(s){ document.getElementById('devModal').style.display=s?'flex':'none'; }
-        function launchApp(id){
-            const mainMenu = document.getElementById('mainMenu');
-            const appContainer = document.getElementById('appContainer');
+        function toggleModal(show) { document.getElementById('devModal').style.display = show ? 'flex' : 'none'; }
+
+        function launchApp(appId) {
             const injectArea = document.getElementById('injectArea');
-            let rawCode = document.getElementById('code_'+id).innerHTML;
-            injectArea.innerHTML = rawCode;
+            const appCode = document.getElementById('code_' + appId).innerHTML;
+            injectArea.innerHTML = appCode;
             const scripts = injectArea.getElementsByTagName("script");
             for (let i = 0; i < scripts.length; i++) {
                 const newScript = document.createElement("script");
                 newScript.text = scripts[i].text;
                 document.head.appendChild(newScript).parentNode.removeChild(newScript);
             }
-            mainMenu.style.display = 'none';
-            appContainer.style.display = 'block';
-            window.scrollTo(0,0);
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            window.scrollTo(0, 0);
+            history.pushState({appOpen: true}, "");
         }
-        function goHome(){ location.reload(); }
+
+        window.onpopstate = function(event) {
+            if (document.getElementById('appContainer').style.display === 'block') {
+                if(confirm("هل تريد العودة للقائمة الرئيسية؟")) goHome();
+                else history.pushState({appOpen: true}, "");
+            }
+        };
+
+        function goHome() { location.reload(); }
     </script>
 </body>
 </html>
